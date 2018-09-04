@@ -8,20 +8,19 @@ StorageHelperKeyValueFormat::StorageHelperKeyValueFormat(const std::string& file
 {
 }
 
-bool StorageHelperKeyValueFormat::load(std::map<std::string, std::string>& fileStorage)
+void StorageHelperKeyValueFormat::load(mapFormat& fileStorage)
 {
 	std::ifstream file(filePath_, std::ios::in);
-	std::vector<std::string> fileData;
-	std::string strFile;
 
 	if (!file.is_open() || !file.good())
 	{
 		throw(std::runtime_error("Doesn't exist or can't open file " + filePath_ + "."));
-
-		return false;
 	}
 
 	//fileSize_ = defineFileSize(file);
+
+	std::vector<std::string> fileData;
+	std::string strFile;
 
 	while (std::getline(file, strFile))
 	{
@@ -29,13 +28,11 @@ bool StorageHelperKeyValueFormat::load(std::map<std::string, std::string>& fileS
 	}
 
 	loadDataToKeyValueFormat(fileData, fileStorage);
-
-	return true;
 }
 
-bool StorageHelperKeyValueFormat::save(const std::map<std::string, std::string>& fileStorage)
+void StorageHelperKeyValueFormat::save(const mapFormat& fileStorage)
 {
-	return saveToKeyValueFile(fileStorage);
+	saveToKeyValueFile(fileStorage);
 }
 
 void StorageHelperKeyValueFormat::set(const std::string & filePath)
@@ -48,15 +45,15 @@ const std::string & StorageHelperKeyValueFormat::get() const
 	return filePath_;
 }
 
-void StorageHelperKeyValueFormat::loadDataToKeyValueFormat(const std::vector<std::string>& fileData, std::map<std::string, std::string>& fileStorage)
+void StorageHelperKeyValueFormat::loadDataToKeyValueFormat(const std::vector<std::string>& fileData, mapFormat& fileStorage)
 {
-	int foundAssign, foundSpace;
-	std::string key, value;
-
 	if (fileStorage.empty() == false)
 	{
 		fileStorage.clear();
 	}
+
+	int foundAssign, foundSpace;
+	std::string key, value;
 
 	for (const auto& i : fileData)
 	{
@@ -72,11 +69,19 @@ void StorageHelperKeyValueFormat::loadDataToKeyValueFormat(const std::vector<std
 
 				fileStorage.insert(std::pair<std::string, std::string>(key, value));
 			}
+			else
+			{
+				throw(std::runtime_error("The file "+ filePath_ +"contains not correct data format."));
+			}
+		}
+		else
+		{
+			throw(std::runtime_error("File contains one of notes without required symbol '='."));
 		}
 	}
 }
 
-bool StorageHelperKeyValueFormat::saveToKeyValueFile(const std::map<std::string, std::string>& fileKeyValueStorage)
+void StorageHelperKeyValueFormat::saveToKeyValueFile(const mapFormat& fileKeyValueStorage)
 {
 	std::ofstream file;
 
@@ -84,17 +89,13 @@ bool StorageHelperKeyValueFormat::saveToKeyValueFile(const std::map<std::string,
 
 	if (!file.is_open())
 	{
-		throw(std::runtime_error("Can't open the file '" + filePath_ + "' to save changes.\n"));
-
-		return false;
+		throw(std::runtime_error("Can't open the file '" + filePath_ + "' to save changes."));
 	}
 
 	for (const auto& i : fileKeyValueStorage)
 	{
-		file << i.first + "=" + i.second << std::endl;
+		file << i.first << "=" << i.second << std::endl;
 	}
 
 	file.close();
-
-	return true;
 }

@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClInclude Include="BaseStorageHelper.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="AliasFormats.h" />
     <ClInclude Include="StorageHelperKeyValueFormat.h" />
     <ClInclude Include="StorageHelperStringStringFormat.h" />
   </ItemGroup>

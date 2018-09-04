@@ -30,6 +30,9 @@
     <ClInclude Include="StorageHelperStringStringFormat.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="AliasFormats.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseStorageHelper.cpp">

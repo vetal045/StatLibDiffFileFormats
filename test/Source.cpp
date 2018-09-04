@@ -7,51 +7,77 @@
 #include<vector>
 
 
-void main()
+int main()
 {
 
-	//Test of work with files
+	try
+	{
+		//Test of work with files
 
-	StorageHelperKeyValueFormat form1("C:/123.txt"); //Creation object of new format for work with with files
+		std::shared_ptr<StorageHelperKeyValueFormat> form1 = std::make_shared<StorageHelperKeyValueFormat>("C:/123.txt");
+		//StorageHelperKeyValueFormat form1("C:/123.txt"); //Creation object of new format for work with with files
 
-	Config conf1(form1); //Creation config object to perform changes in 'form1'
+		Config conf1(form1); //Creation config object to perform changes in 'form1'
 
-	conf1.load(); //loading data from the  file
+		try
+		{
+			conf1.load(); //loading data from the file
 
-	conf1.print(std::cout); //printing file context
+			conf1.print(std::cout); //printing file context
 
-	conf1.add("qwerty", "123456");
+			conf1.add("qwerty", "123456");
 
-	conf1.save();
+			conf1.print(std::cout); //Printing saved data of the file
 
-	conf1.print(std::cout); //Printing saved data of the file
-
-
-
-
-	//Test of work with vectors
-
-	std::vector<std::pair<std::string, std::string>> myVec;
-
-	myVec.push_back(std::make_pair("5", "five"));
-	myVec.push_back(std::make_pair("3", "three"));
+			conf1.save();
+		}
+		catch (const std::runtime_error& e)
+		{
+			std::cerr << e.what() << std::endl;
+		}
 
 
-	StorageHelperStringStringFormat form2(myVec);
+		//Test of work with vectors
 
-	Config conf2(form2);
+		std::vector<std::pair<std::string, std::string>> myVec;
 
-	conf2.load();
+		myVec.push_back(std::make_pair("5", "five"));
+		myVec.push_back(std::make_pair("3", "three"));
 
-	conf2.add("1", "one");
 
-	conf2.print(std::cout);
+		std::shared_ptr<StorageHelperStringStringFormat> form2 = std::make_shared<StorageHelperStringStringFormat>(myVec);
 
-	conf2.set("3", "123");
+		Config conf2(form2);
 
-	std::cout << conf2.get("4") << std::endl;
+		try
+		{
+			conf2.load();
 
-	conf2.save();
+			conf2.add("1", "one");
 
-	conf2.print(std::cout);
+			conf2.print(std::cout);
+
+			conf2.set("3", "123");
+
+			std::cout << conf2.get("3") << std::endl;
+
+			conf2.save();
+
+			conf2.print(std::cout);
+		}
+		catch (const std::runtime_error& e)
+		{
+			std::cerr << e.what() << std::endl;
+		}
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
+	catch (...)	{
+		std::cerr << "Unknown error." << std::endl;
+	}
+
+	system("pause");
+	return 0;
 }

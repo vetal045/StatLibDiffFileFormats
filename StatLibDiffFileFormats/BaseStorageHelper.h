@@ -1,6 +1,6 @@
 #pragma once
 
-#include <map>
+#include "AliasFormats.h"
 
 //
 // Declaration of the class BaseStorageHelper.
@@ -16,9 +16,9 @@ public:
 
 	//! Loads all data from the file
 	//! @Returns true if the file was successfully loaded and contained normal format of data
-	virtual bool load(std::map<std::string, std::string>& fileStorage) = 0;
+	virtual void load(mapFormat& fileStorage) = 0;
 
 	//! Saves data
-	virtual bool save(const std::map<std::string, std::string>& fileStorage) = 0;
+	virtual void save(const mapFormat& fileStorage) = 0;
 };
 

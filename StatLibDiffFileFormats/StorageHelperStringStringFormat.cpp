@@ -3,24 +3,22 @@
 #include <string>
 #include <algorithm>
 
-StorageHelperStringStringFormat::StorageHelperStringStringFormat(std::vector<std::pair<std::string, std::string>>& vectorDataStorage)
+StorageHelperStringStringFormat::StorageHelperStringStringFormat(vectorFormat& vectorDataStorage)
 	: vectorDataStorage_(vectorDataStorage)
 {
 }
 
-bool StorageHelperStringStringFormat::load(std::map<std::string, std::string>& fileStorage)
+void StorageHelperStringStringFormat::load(mapFormat& fileStorage)
 {
 	loadDataToStringStringFormat(vectorDataStorage_, fileStorage);
-
-	return true;
 }
 
-bool StorageHelperStringStringFormat::save(const std::map<std::string, std::string>& fileStorage)
+void StorageHelperStringStringFormat::save(const mapFormat& fileStorage)
 {
-	return saveToStringStringFile(fileStorage);
+	saveToStringStringFile(fileStorage);
 }
 
-void StorageHelperStringStringFormat::set(const std::vector<std::pair<std::string, std::string>>& vectorDataStorage)
+void StorageHelperStringStringFormat::set(const vectorFormat& vectorDataStorage)
 {
 	vectorDataStorage_ = vectorDataStorage;
 }
@@ -30,15 +28,14 @@ const std::vector<std::pair<std::string, std::string>>& StorageHelperStringStrin
 	return vectorDataStorage_;
 }
 
-void StorageHelperStringStringFormat::loadDataToStringStringFormat(const std::vector<std::pair<std::string, std::string>>& vectData, std::map<std::string, std::string>& fileStorage)
+void StorageHelperStringStringFormat::loadDataToStringStringFormat(const vectorFormat& vectData, mapFormat& vectorStorage)
 {
-	int foundAssign, foundSpace;
-	std::string key, value;
-
-	if (fileStorage.empty() == false)
+	if (vectorStorage.empty() == false)
 	{
-		fileStorage.clear();
+		vectorStorage.clear();
 	}
+
+	int foundSpace;
 
 	for (const auto& i : vectData)
 	{
@@ -46,15 +43,16 @@ void StorageHelperStringStringFormat::loadDataToStringStringFormat(const std::ve
 
 		if (foundSpace == std::string::npos)
 		{
-			key = i.first;
-			value = i.second;
-
-			fileStorage.insert(std::pair<std::string, std::string>(key, value));
+			vectorStorage.insert(i);
+		}
+		else
+		{
+			throw(std::runtime_error("Vector contains not correct data format."));
 		}
 	}
 }
 
-bool StorageHelperStringStringFormat::saveToStringStringFile(const std::map<std::string, std::string>& fileStringStringStorage)
+void StorageHelperStringStringFormat::saveToStringStringFile(const mapFormat& fileStringStringStorage)
 {
 	if (!vectorDataStorage_.empty())
 	{
@@ -65,6 +63,4 @@ bool StorageHelperStringStringFormat::saveToStringStringFile(const std::map<std:
 	{
 		vectorDataStorage_.push_back(std::make_pair(i.first, i.second));
 	}
-
-	return true;
 }

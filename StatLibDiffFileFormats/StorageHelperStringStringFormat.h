@@ -1,8 +1,8 @@
 #pragma once
 
-#include "BaseStorageHelper.h"
+#include "AliasFormats.h"
 
-#include <vector>
+#include "BaseStorageHelper.h"
 
 //
 // Declaration of the class StorageHelperStringStringFormat.
@@ -16,7 +16,7 @@ class StorageHelperStringStringFormat : public BaseStorageHelper
 
 public:
 
-	StorageHelperStringStringFormat(std::vector<std::pair<std::string, std::string>>& vectorDataStorage);
+	StorageHelperStringStringFormat(vectorFormat& vectorDataStorage);
 
 	//
 	// Public methods.
@@ -26,16 +26,16 @@ public:
 
 	//! Loads all data from the NumberString format file
 	//! @Returns true if the file was successfully loaded and contained NumberString format data
-	virtual bool load(std::map<std::string, std::string>& fileStorage) override;
+	virtual void load(mapFormat& fileStorage) override;
 
 	//! Saves data to the NumberString format file
-	virtual bool save(const std::map<std::string, std::string>& fileStorage) override;
+	virtual void save(const mapFormat& fileStorage) override;
 	
 	//! Sets path of the file
-	void set(const std::vector<std::pair<std::string, std::string>>& vectorDataStorage);
+	void set(const vectorFormat& vectorDataStorage);
 
 	//! @Returns string with path of the file
-	const std::vector<std::pair<std::string, std::string>>& get() const;
+	const vectorFormat& get() const;
 	
 	//
 	// Private methods.
@@ -44,16 +44,16 @@ public:
 private:
 
 	//! Converts all data to KeyValue format
-	void loadDataToStringStringFormat(const std::vector<std::pair<std::string, std::string>>& vectData, std::map <std::string, std::string> & fileStorage);
+	void loadDataToStringStringFormat(const vectorFormat& vectData, mapFormat & vectorStorage);
 
 	//! Saves data to KeyValue format file
-	bool saveToStringStringFile(const std::map<std::string, std::string>& fileStringStringStorage);
+	void saveToStringStringFile(const mapFormat& fileStringStringStorage);
 
 	//
 	// Private data members.
 	//
 
 private:
-	std::vector<std::pair<std::string, std::string>>& vectorDataStorage_;
+	vectorFormat& vectorDataStorage_;
 };
 

@@ -3,50 +3,66 @@
 #include <iostream>
 #include <string>
 
-Config::Config(const StorageHelperKeyValueFormat & keyValueFileDataStorage) 
+
+Config::Config(const std::shared_ptr<BaseStorageHelper> keyValueFileDataStorage)
+: formatFileStorage_(keyValueFileDataStorage)
+{
+}
+
+
+/*Config::Config(const StorageHelperKeyValueFormat& keyValueFileDataStorage)
 	: formatFileStorage_(std::make_shared<StorageHelperKeyValueFormat>(keyValueFileDataStorage))
 {
 }
 
-Config::Config(const StorageHelperStringStringFormat & stringStringfileDataStorage)
-	: formatFileStorage_(std::make_shared<StorageHelperStringStringFormat>(stringStringfileDataStorage))
+Config::Config(const StorageHelperStringStringFormat& keyValueFileDataStorage)
+	: formatFileStorage_(std::make_shared<StorageHelperStringStringFormat>(keyValueFileDataStorage))
 {
-}
+}*/
 
 void Config::add(const std::string & key, const std::string & value)
 {
 	if (key.find(' ') == std::string::npos)
 	{
-		dataStorage_.insert(std::pair<std::string, std::string>(key, value));
+		const auto it = dataStorage_.find(key);
+
+		if (it == dataStorage_.end())
+		{
+			dataStorage_.insert(std::pair<std::string, std::string>(key, value));
+		}
+		else
+		{
+			throw(std::runtime_error("Storage already contains note with the specified key - "+ key +"."));
+		}
 	}
 	else
 	{
-		std::cout << "Bad enter in the key '" + key + "'. Read rules to right adding for that format!" << std::endl;
+		throw(std::runtime_error("Bad enter by specified key - " + key + "."));
 	}
 }
 
 void Config::deleteByKey(const std::string & key)
 {
-	std::map<std::string, std::string>::iterator it = dataStorage_.find(key);
+	const auto it = dataStorage_.find(key);
 
 	dataStorage_.erase(it);
 }
 
-bool Config::load()
+void Config::load()
 {
-	return formatFileStorage_->load(dataStorage_);
+	formatFileStorage_->load(dataStorage_);
 }
 
-bool Config::save()
+void Config::save()
 {
-	return formatFileStorage_->save(dataStorage_);
+	formatFileStorage_->save(dataStorage_);
 }
 
 void Config::print(std::ostream & os)
 {
 	if (dataStorage_.empty() == true)
 	{
-		std::cout << "The container is an empty." << std::endl;
+		throw(std::runtime_error("The container is an empty."));
 	}
 	else
 	{
@@ -66,48 +82,42 @@ void Config::print(std::ostream & os)
 
 void Config::clear()
 {
-	if (dataStorage_.empty() == false)
-	{
-		dataStorage_.clear();
-	}
+	dataStorage_.clear();
 }
 
 void Config::set(const std::string & key, const std::string & value)
 {
-	std::map<std::string, std::string>::iterator it = dataStorage_.find(key);
+	const auto it = dataStorage_.find(key);
 
 	if (it != dataStorage_.end())
+	{
 		it->second = value;
+	}
+	else
+	{
+		add(key,value);
+	}
 }
 
 std::string Config::get(const std::string & key)
 {
+	auto it = dataStorage_.find(key);
+
 	std::string value;
 
-	for (const auto& i : dataStorage_)
+	if (it != dataStorage_.end())
 	{
-		if (i.first == key)
-		{
-			value = i.second;
-			break;
-		}
+		value = it->second;
 	}
-
+	
 	return value;
 }
 
 bool Config::contains(const std::string & key)
 {
-	std::map<std::string, std::string>::iterator it = dataStorage_.find(key);
+	const auto it = dataStorage_.find(key);
 
-	if (it == dataStorage_.end())
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}
+	return (it != dataStorage_.end());
 }
 
 
