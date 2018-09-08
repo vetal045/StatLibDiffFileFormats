@@ -4,6 +4,8 @@
 
 #include "BaseStorageHelper.h"
 
+#include <vector>
+
 //
 // Declaration of the class StorageHelperKeyValueFormat.
 //

@@ -14,7 +14,7 @@ int main()
 	{
 		//Test of work with files
 
-		std::shared_ptr<StorageHelperKeyValueFormat> form1 = std::make_shared<StorageHelperKeyValueFormat>("C:/123.txt");
+		auto form1 = std::make_shared<StorageHelperKeyValueFormat>("C:/Users/Виталий/Documents/Visual Studio 2015/Projects/StatLibDiffFileFormats/123.txt");
 		//StorageHelperKeyValueFormat form1("C:/123.txt"); //Creation object of new format for work with with files
 
 		Config conf1(form1); //Creation config object to perform changes in 'form1'
@@ -45,7 +45,7 @@ int main()
 		myVec.push_back(std::make_pair("3", "three"));
 
 
-		std::shared_ptr<StorageHelperStringStringFormat> form2 = std::make_shared<StorageHelperStringStringFormat>(myVec);
+		auto form2 = std::make_shared<StorageHelperStringStringFormat>(myVec);
 
 		Config conf2(form2);
 

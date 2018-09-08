@@ -62,7 +62,7 @@ void Config::print(std::ostream & os)
 {
 	if (dataStorage_.empty() == true)
 	{
-		throw(std::runtime_error("The container is an empty."));
+		os << "The container is an empty." << std::endl;
 	}
 	else
 	{
@@ -108,6 +108,10 @@ std::string Config::get(const std::string & key)
 	if (it != dataStorage_.end())
 	{
 		value = it->second;
+	}
+	else
+	{
+		throw(std::runtime_error("The pair don't exist by key - "+ key +"."));
 	}
 	
 	return value;

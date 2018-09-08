@@ -1,8 +1,11 @@
 #pragma once
 
-#include "AliasFormats.h"
-
 #include "BaseStorageHelper.h"
+
+#include <vector>
+
+// Alias to vector format
+using vectorFormat = std::vector<std::pair<std::string, std::string>>;
 
 //
 // Declaration of the class StorageHelperStringStringFormat.
